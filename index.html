@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09090f"><link rel="manifest" href="manifest.json">
+<title>Clip Machine</title><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top"><div class="brand"><span class="mark">✂</span><div><b>CLIP MACHINE</b><small>AI CLIPPING STUDIO</small></div></div><span class="status">BETA · EDITOR LOCAL</span></header>
+<main>
+<section class="intro"><p class="eyebrow">TU ESTUDIO DE CONTENIDO</p><h1>Convierte directos<br>en <em>momentos virales.</em></h1><p class="muted">Importa un vídeo, selecciona momentos y diseña cada clip a tu manera.</p></section>
+<section class="panel modes">
+ <div class="section-head"><h2>01 · ¿Qué quieres recortar?</h2><span class="tag">Dos modalidades</span></div>
+ <div class="choice-grid">
+  <button class="choice active" data-source-mode="live"><b>🔴 Stream en vivo</b><small>Preparado para conectar una transmisión y crear clips mientras sigue en directo.</small></button>
+  <button class="choice" data-source-mode="vod"><b>▶ Directo terminado</b><small>Preparado para analizar un VOD y encontrar sus mejores momentos.</small></button>
+ </div>
+ <div class="subpanel" id="liveInfo"><b>Modo en vivo</b><p class="muted">La captura en vivo de Kick, Twitch y YouTube requiere conectar servicios de ingestión compatibles. Esta conexión todavía no está activa. Puedes probar el editor con un vídeo local.</p></div>
+ <div class="subpanel hidden" id="vodInfo"><b>Modo después del directo</b><p class="muted">El análisis automático del VOD necesita conectar las plataformas y el motor de IA. Mientras tanto, puedes cargar un archivo y seleccionar manualmente el fragmento.</p></div>
+</section>
+<section class="panel source">
+ <div class="section-head"><h2>02 · Fuente de vídeo</h2><span class="tag">Importar</span></div>
+ <label class="upload" for="videoFile"><span class="upload-icon">＋</span><b>Seleccionar vídeo</b><small>MP4, MOV o WebM · desde tu dispositivo</small></label><input id="videoFile" type="file" accept="video/*" hidden>
+ <video id="sourceVideo" controls playsinline></video>
+ <div id="remotePlayerWrap" class="remote-player hidden"><iframe id="remotePlayer" title="Reproductor de stream" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+ <div class="urlrow"><input id="videoUrl" type="url" inputmode="url" autocomplete="url" placeholder="Pega un enlace de Kick, Twitch o YouTube"><button id="urlInfo" class="secondary" type="button">Usar enlace</button></div>
+ <p class="hint" id="sourceHint">Los enlaces requieren una integración compatible; para este prototipo, carga un archivo de vídeo.</p>
+</section>
+<section class="panel">
+ <div class="section-head"><h2>03 · Selección de momentos</h2><span class="tag">IA + manual</span></div>
+ <div class="choice-grid"><button class="choice active" data-mode="auto"><b>✦ Automática</b><small>La IA encontrará momentos interesantes cuando conectemos el motor de análisis.</small></button><button class="choice" data-mode="manual"><b>⌖ Manual</b><small>Define el inicio y final del fragmento que quieres convertir en clip.</small></button></div>
+ <div id="autoPanel" class="subpanel"><b>Detección inteligente</b><p class="muted">La selección automática estará disponible al conectar transcripción y análisis de audio/vídeo. No simulamos resultados: primero conectaremos el motor real.</p><div class="chips"><span>Reacciones</span><span>Humor</span><span>Historias</span><span>Momentos intensos</span></div></div>
+ <div id="manualPanel" class="subpanel hidden"><div class="rangegrid"><label>Inicio (segundos)<input id="startTime" type="number" min="0" value="0"></label><label>Final (segundos)<input id="endTime" type="number" min="1" value="30"></label></div><button id="previewRange" class="primary">Previsualizar fragmento</button></div>
+</section>
+<section class="panel editor">
+ <div class="section-head"><h2>04 · Editor completo</h2><span class="tag">Vista previa en vivo</span></div>
+ <div class="editor-grid">
+  <div class="preview-wrap"><div id="preview" class="preview portrait"><div id="mediaLayer" class="media-layer"><div class="placeholder">Tu vídeo aparecerá aquí</div></div><div id="splitBottom" class="split-bottom hidden">SEGUNDA FUENTE / GAMEPLAY</div><div id="caption" class="caption">Tu subtítulo aparecerá aquí</div></div><div class="preview-note">Vista previa de composición</div></div>
+  <div class="controls">
+   <h3>Formato y composición</h3>
+   <div class="format-grid"><button class="format active" data-format="portrait">Vertical 9:16</button><button class="format" data-format="landscape">Horizontal 16:9</button><button class="format" data-format="split">Pantalla dividida</button><button class="format" data-format="photo">Foto + vídeo</button></div>
+   <label>Tipografía<select id="font"><option value="Noto Sans">Noto Sans</option><option value="Arial">Arial</option><option value="Georgia">Georgia</option><option value="Impact">Impact</option><option value="system-ui">Sistema</option></select></label>
+   <label>Texto de subtítulo<textarea id="captionText" rows="2">Tu subtítulo aparecerá aquí</textarea></label>
+   <div class="rangegrid"><label>Tamaño <output id="sizeOut">18</output><input id="fontSize" type="range" min="10" max="36" value="18"></label><label>Zoom <output id="zoomOut">1.0×</output><input id="zoom" type="range" min="1" max="2.5" step=".1" value="1"></label></div>
+   <div class="rangegrid"><label>Posición vertical <output id="posOut">78%</output><input id="position" type="range" min="5" max="95" value="78"></label><label>Color del texto<input id="fontColor" type="color" value="#ffffff"></label></div>
+   <label>Fondo de subtítulo<select id="captionBg"><option value="dark">Negro translúcido</option><option value="none">Sin fondo</option><option value="solid">Negro sólido</option></select></label>
+   <label>Encuadre<select id="fit"><option value="cover">Rellenar (recortar)</option><option value="contain">Mostrar completo</option></select></label>
+  </div>
+ </div>
+ <div class="timeline"><div class="section-head"><h3>Línea de tiempo</h3><span id="durationLabel">00:00 / 00:00</span></div><input id="scrub" type="range" min="0" max="100" value="0"><div class="rangegrid"><label>Desde<input id="trimStart" type="number" min="0" value="0"></label><label>Hasta<input id="trimEnd" type="number" min="1" value="30"></label></div></div>
+</section>
+<section class="panel">
+ <div class="section-head"><h2>05 · Exportación</h2><span class="tag">MP4</span></div>
+ <div class="rangegrid"><label>Resolución<select id="resolution"><option>1080 × 1920</option><option>720 × 1280</option><option>1080 × 1080</option></select></label><label>FPS<select id="fps"><option>30 FPS</option><option>60 FPS</option></select></label></div>
+ <button id="exportBtn" class="primary full">Exportar clip de este vídeo</button><p class="hint" id="exportHint">La exportación local usa las capacidades de grabación del navegador. Para streams, IA y exportación avanzada necesitaremos el backend.</p><div id="exportProgress" class="progress hidden"><span id="progressBar"></span></div>
+</section>
+<footer>CLIP MACHINE · Hecho para crear, editar y publicar.</footer>
+</main><script src="app.js"></script>
+</body></html>

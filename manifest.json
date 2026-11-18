@@ -1,0 +1,9 @@
+{
+  "name": "Clip Machine",
+  "short_name": "Clip Machine",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#09090f",
+  "theme_color": "#09090f",
+  "description": "Estudio de edición de clips con IA"
+}
